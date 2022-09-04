@@ -7,10 +7,14 @@ layout: null
 /* --- General --- */
 
 html {
-  font-size: 100%
+  font-size: 100%;
+  height: 100%;
+  margin: 0;
 }
 
 body {
+  height: 100%;
+  margin: 0;
   font-family: 'Lora', 'Times New Roman', serif;
   font-size: 1.125rem;
   color: {{ site.text-col | default: "#404040" }};
@@ -23,11 +27,20 @@ body {
   overflow-wrap: break-word;
 }
 
+.wrapper {
+  min-height: 100%;
+  padding-top: 4rem;
+  margin-bottom: -14rem;
+}
+
+.space-holder {
+  height: 17rem;
+}
+
 p {
   line-height: 1.5;
   margin: 1.875rem 0;
 }
-
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-weight: 800;
@@ -372,9 +385,9 @@ img {
 /* --- Footer --- */
 
 footer {
+  height: 14rem;
   padding: 1.875rem 0;
   border-top: 1px #EAEAEA solid;
-  margin-top: 3.125rem;
   font-size: 0.875rem;
   background-color: {{ site.footer-col | default: "#EAEAEA" }};
   {% if site.footer-img %}
@@ -727,7 +740,7 @@ nav.top-nav-short-permanent ~ header > .intro-header.big-img {
   margin-top: 0;
   background-color: #FCFCFC;
   margin: 0 0 2.5rem;
-  padding: 1.25rem 0;
+  /* padding: 1.25rem 0; */
   box-shadow: 0 0 0.3125rem #AAA;
 }
 /* Many phones are 320 or 360px, so make sure images are a proper aspect ratio in those cases */

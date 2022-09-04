@@ -25,16 +25,24 @@ common-js:
 {% include head.html %}
 
 <body>
+  <div class="wrapper">
 
-  {% include gtm_body.html %}
+    {% include gtm_body.html %}
 
-  {% include nav.html %}
+    {% include nav.html %}
 
-  {{ content }}
+    {{ content }}
+
+    <div class="space-holder"></div>
+  </div>
+</body>
+
+<footer>
 
   {% include footer.html %}
 
   {% include footer-scripts.html %}
 
-</body>
+</footer>
+
 </html>
