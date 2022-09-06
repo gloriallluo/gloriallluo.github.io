@@ -16,6 +16,7 @@ author: Jingjia Luo
 navbar-links:
   Tags: "tags"
   Archive: "archive"
+  Friends: "friends"
   About Me: "aboutme"
 
 # --- Logo --- #
@@ -130,7 +131,7 @@ footer-hover-col: "#305FB7"
 #gtag: ""
 
 # Fill in your Google Analytics ID to track your website using Google Analytics
-#google_analytics: ""
+google_analytics: "gloriallluo"
 
 # Fill in your Cloudflare Analytics beacon token to track your website using Cloudflare Analytics
 #cloudflare_analytics: ""
@@ -155,7 +156,7 @@ footer-hover-col: "#305FB7"
 #fb_comment_id: ""
 
 # To use CommentBox, sign up for a Project ID on https://commentbox.io
-#commentbox: "" # Project ID, e.g. "5694267682979840-proj"
+commentbox: "5718605249380352-proj" # Project ID, e.g. "5694267682979840-proj"
 
 # To use Utterances comments: (0) uncomment the following section, (1) fill in
 # "repository" (make sure the repository is public), (2) Enable Issues in your repository,
