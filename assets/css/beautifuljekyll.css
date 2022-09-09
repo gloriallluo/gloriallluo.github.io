@@ -1123,7 +1123,7 @@ pre {
 #archives .lead {
   font-size: 1.5rem;
   position: relative;
-  /* left: 8px; */
+  margin-left: 2rem;
 }
 
 /* the dot after "year" */
@@ -1221,10 +1221,9 @@ pre {
 #archives span.day {
   font-family: 'Lato', sans-serif;
   text-align: center;
-  margin-right: -2px;
-  width: 1.2rem;
+  width: 0.8rem;
   position: relative;
-  left: -0.15rem;
+  left: -0.5rem;
 }
 #archives span.month {
   width: 1.6rem;
