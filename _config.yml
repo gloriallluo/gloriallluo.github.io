@@ -6,7 +6,7 @@
 # --- Required options --- #
 
 # Name of website
-title: gloriallluo
+title: 学习编程的海豹
 
 # Your name to show in the footer
 author: Jingjia Luo
@@ -156,7 +156,7 @@ google_analytics: "gloriallluo"
 #fb_comment_id: ""
 
 # To use CommentBox, sign up for a Project ID on https://commentbox.io
-commentbox: "5718605249380352-proj" # Project ID, e.g. "5694267682979840-proj"
+commentbox: "5691000622153728-proj" # Project ID, e.g. "5694267682979840-proj"
 
 # To use Utterances comments: (0) uncomment the following section, (1) fill in
 # "repository" (make sure the repository is public), (2) Enable Issues in your repository,
