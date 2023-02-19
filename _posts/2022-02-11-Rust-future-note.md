@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Notes - Rust Future
-subtitle: 学习 async Rust 的笔记
+subtitle: 学习 async Rust 的笔记（可读性差）
 tags: [Rust]
 comments: true
 ---
@@ -100,7 +100,9 @@ Future 需要被标记为 `Pin`，这本质上因为是它是因为一个自引�
 
 [GitHub - dtolnay/async-trait: Type erasure for async trait methods](https://github.com/dtolnay/async-trait)
 
-一个过程宏，由于奇怪的原因，trait 中的方法不可以是 async 的，因此 async trait 实际将 trait 中的 async fn 编译为普通的函数，其返回值是 `Pin<Box<'_ + dyn Future<...> + Send>>` （不一定是 `Send`，可以把它关掉）。
+一个过程宏，由于奇怪的原因，trait 中的方法不可以是 async 的，因为 async fn 实际上是一种返回值为 `impl Future<...>` 的函数，但是 trait 不允许定义返回值为 `impl Trait` 的方法。因此 async trait 实际将 trait 中的 async fn 编译为普通的函数，其返回值是 `Pin<Box<'_ + dyn Future<...> + Send>>` （不一定是 `Send`，可以把它关掉）。
+
+这篇博客讲了设计 `async_trait` 时为什么采用了运行时开销更大的 `Pin<Box<dyn '_ + Future<...>>>` 的形式。
 
 
 ### Why not `impl Future`?
@@ -111,13 +113,16 @@ Future 需要被标记为 `Pin`，这本质上因为是它是因为一个自引�
 **💡 impl Trait v.s. dyn Trait**\\
 Rust 需要某种机制来确定某个 Trait 具体是哪个实现。impl 关键字就是要求在编译的时候确定实现，称为 static dispatching，其实质是在编译的时候消除泛型，变成确定类型的代码；而 dyn 则是在运行时确定实现，类似于 C++ 通过 vtable 来解决，也会带来一些运行时的性能开销。
 
-在 trait fn 的返回值不可以是 `impl Trait`，因为 Rust 要求函数的返回值是已知大小。对于普通的函数，如果返回值是 `impl Future`，会要求编译期间知道这个 Future 实现具体是什么，普通的函数自然可以完成这一点。对于 trait 中的函数，这一点只能在实例化这个 trait 时才能得知，一个返回 `impl Xxx` 的 trait fn 会被 Rust 编译器新建一个匿名 generic associated type（我的理解：带生命周期参数的关联类型），并且这个函数的返回值也会被修改为这个关联类型。
+Trait 方法的返回值不可以是 `impl Trait`，因为 Rust 要求函数的返回值是已知大小。对于普通的函数，如果返回值是 `impl Future`，会要求编译期间知道这个 Future 实现具体是什么，普通的函数自然可以完成这一点。对于 trait 中的函数，这一点只能在实例化这个 trait 时才能得知。
 
-{: .box-note}
-**💡 为什么要建这个匿名关联类型？**\\
-https://github.com/rust-lang/chalk
+一种行不通的解决办法是在编译时将 trait 变为一个具有 generic associated type 的 trait，该关联类型就是那个被返回的 Future。这样确定这个 Future 的具体实现的工作被交给了 trait 实现者。（为什么是 GAT 而不是普通的关联类型？因为 async fn 会捕获它们所捕获的引用的生命周期，毕竟很多 async fn 带有 &self 参数...）
 
-在我们使用自己编写的 async trait 的时候，我们需要将语法改成诸如 `MyAsyncTrait<AnonymousGAT = Xxx>` 的形式，而对于一个 future，我们除了知道它实现了 `Future` trait，往往没有具体的类型名称，这给编程带来极大的不方便。
+P.S. 以上都是假设，不过这个假设中的编译器把 `impl Future` 变成泛型参数是不是更合理一些？
+
+GAT 的加入使得实现这个 trait 变得更麻烦一些：
+
+- 编译器会为这个 GAT 生成一个名字，使用者在 spawn 这个 future 等用途时需要声明这个 GAT 为 `Send`，然而 GAT 的名字是编译器取的，给不熟悉编译器内部细节的用户带来很大麻烦。
+- 若这个 trait 有多个方法返回多个 Future，再加上用户自己的泛型参数，在使用时用户需要自己标注的 trait bounds 将会非常恐怖。
 
 
 ## 2.2 The designs of `futures`
