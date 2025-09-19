@@ -33,3 +33,11 @@ git clone git@github.com:gloriallluo/nvim.git
 To install nvim plugins, type nvim command `:PackerSync`.
 
 
+## LSPs
+
+### clangd
+
+```bash
+sudo apt-get update
+sudo apt-get install clangd-12
+```
